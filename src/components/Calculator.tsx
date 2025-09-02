@@ -41,7 +41,6 @@ const Calculator: React.FC = () => {
     input_audioguide,
     input_triggers,
     total,
-    subtotal,
     shippingCost,
     setDelivery,
     setReceivers,

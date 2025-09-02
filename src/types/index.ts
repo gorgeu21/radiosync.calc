@@ -87,7 +87,6 @@ export interface CalculatorState {
   discount: Discount | null;
 
   // Ценовые итоги
-  subtotal: number;
   promoDiscountAmount: number;
   discountAmount: number;
   vatAmount: number;
