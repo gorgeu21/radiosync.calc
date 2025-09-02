@@ -20,7 +20,7 @@ export interface Discount {
 
 // ---------- Типы справочников ----------
 export type HeadphonesType = 'in_ear' | 'on_ear';
-export type ChargerCapacity = 10 | 20 | 30 | 40;
+export type ChargerCapacity = 10 | 20 | 30;
 
 export interface SkuPrice {
   sku: string;
@@ -87,11 +87,11 @@ export interface CalculatorState {
   discount: Discount | null;
 
   // Ценовые итоги
+  subtotal: number;              // ← вернули это поле
   promoDiscountAmount: number;
   discountAmount: number;
   vatAmount: number;
   shippingCost: number;
-  subtotal: number;
   total: number;
 
   // Параметры заказа
