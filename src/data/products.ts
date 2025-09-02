@@ -39,26 +39,30 @@ export const products: Product[] = [
     name: 'Наушники Premium',
     price: 2500,
     category: 'accessory',
-    description: 'Премиальные наушники',
+    description: 'Комфортные наушники',
     image: '/images/headphones-premium.jpg'
   }
 ];
 
-// ---------- Конфиг калькулятора с разными прайс-профилями ----------
+// ---------- Конфиг калькулятора ----------
 export const calculatorConfig: CalculatorConfig = {
+  // НДС по умолчанию
   currency: 'RUB',
-  vatRateDefault: 20,
+  vatRateDefault: 0,
 
   // Фолбэк (базовый прайс, если профиль не найден)
   sku: {
     transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 5100 },
     receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 1200 },
     microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2000 },
+
+    // === ИЗМЕНЕНО: только два варианта по смыслу, третий ключ оставлен для совместимости типов ===
     headphones: {
-      in_ear: { sku: 'HP-IN', name: 'Наушники (Многоразовые)', unitPrice: 500 },
-      on_ear: { sku: 'HP-ON', name: 'Наушники (Одноразовые)', unitPrice: 30 },
-      over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 2000 }
+      in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
+      on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 500 },
+      over_ear: { sku: 'HP-OV', name: 'Многоразовые', unitPrice: 500 } // тех. совместимость
     },
+
     charger: {
       10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 8000 },
       20: { sku: 'CH-20', name: 'Зарядное устройство на 20', unitPrice: 15000 },
@@ -72,11 +76,14 @@ export const calculatorConfig: CalculatorConfig = {
       transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 5100 },
       receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 1200 },
       microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2000 },
+
+      // === ИЗМЕНЕНО ===
       headphones: {
-        in_ear: { sku: 'HP-IN', name: 'Наушники (Одноразовые)', unitPrice: 30 },
-        on_ear: { sku: 'HP-ON', name: 'Наушники (Многоразовые)', unitPrice: 500 },
-        over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 1900 }
+        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
+        on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 500 },
+        over_ear: { sku: 'HP-OV', name: 'Многоразовые', unitPrice: 500 } // тех. совместимость
       },
+
       charger: {
         10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 8000 },
         20: { sku: 'CH-20', name: 'Зарядное устройство на 20', unitPrice: 15000 },
@@ -88,11 +95,14 @@ export const calculatorConfig: CalculatorConfig = {
       transmitter: { sku: 'TX', name: 'Аудиогид', unitPrice: 11500 },
       receiver: { sku: 'RX', name: 'Триггер', unitPrice: 5000 },
       microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 1800 },
+
+      // === ИЗМЕНЕНО ===
       headphones: {
-        in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 650 },
-        on_ear: { sku: 'HP-ON', name: 'Наушники (накладные)', unitPrice: 1100 },
-        over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 1900 }
+        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
+        on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 500 },
+        over_ear: { sku: 'HP-OV', name: 'Многоразовые', unitPrice: 500 } // тех. совместимость
       },
+
       charger: {
         10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 7900 },
         20: { sku: 'CH-20', name: 'Зарядное устройство на 20', unitPrice: 14800 },
@@ -104,11 +114,14 @@ export const calculatorConfig: CalculatorConfig = {
       transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 16400 },
       receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 8200 },
       microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2000 },
+
+      // === ИЗМЕНЕНО ===
       headphones: {
-        in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 700 },
-        on_ear: { sku: 'HP-ON', name: 'Наушники (накладные)', unitPrice: 1200 },
-        over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 2000 }
+        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
+        on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 500 },
+        over_ear: { sku: 'HP-OV', name: 'Многоразовые', unitPrice: 500 } // тех. совместимость
       },
+
       charger: {
         10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 8000 },
         20: { sku: 'CH-20', name: 'Зарядное устройство на 20', unitPrice: 15000 },
@@ -117,8 +130,9 @@ export const calculatorConfig: CalculatorConfig = {
     }
   },
 
-  // Скидки за объём
+  // Скидки от объёма (пример)
   volumeDiscounts: [
+    { thresholdQty: 10, percentage: 3 },
     { thresholdQty: 20, percentage: 5 },
     { thresholdQty: 50, percentage: 10 },
     { thresholdQty: 100, percentage: 15 }
