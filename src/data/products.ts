@@ -60,7 +60,6 @@ export const calculatorConfig: CalculatorConfig = {
     headphones: {
       in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
       on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 500 },
-      over_ear: { sku: 'HP-OV', name: 'Многоразовые', unitPrice: 500 } // тех. совместимость
     },
 
     charger: {
@@ -81,7 +80,6 @@ export const calculatorConfig: CalculatorConfig = {
       headphones: {
         in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
         on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 500 },
-        over_ear: { sku: 'HP-OV', name: 'Многоразовые', unitPrice: 500 } // тех. совместимость
       },
 
       charger: {
@@ -100,7 +98,6 @@ export const calculatorConfig: CalculatorConfig = {
       headphones: {
         in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
         on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 500 },
-        over_ear: { sku: 'HP-OV', name: 'Многоразовые', unitPrice: 500 } // тех. совместимость
       },
 
       charger: {
@@ -119,7 +116,6 @@ export const calculatorConfig: CalculatorConfig = {
       headphones: {
         in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
         on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 500 },
-        over_ear: { sku: 'HP-OV', name: 'Многоразовые', unitPrice: 500 } // тех. совместимость
       },
 
       charger: {
