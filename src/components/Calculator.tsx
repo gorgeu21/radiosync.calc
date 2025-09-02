@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useCalculatorStore from '../store/calculatorStore';
 import { calculatorConfig } from '../data/products';
 import RadioGuideTab from './RadioGuideTab';
@@ -20,7 +20,22 @@ const Calculator: React.FC = () => {
     email: '',
     phone: '+7'
   });
-  
+
+  // НОВОЕ: берём экшен для установки профиля цен
+  const setPriceProfile = useCalculatorStore(s => s.setPriceProfile);
+
+  // Маппинг: индекс вкладки → профиль цен
+  const tabToProfile = (tab: number) =>
+    tab === 0 ? 'radioguide'
+      : tab === 1 ? 'audioguide'
+        : tab === 2 ? 'uniguide'
+          : 'radioguide';
+
+  // НОВОЕ: при смене вкладки — обновляем профиль цен в сторе
+  useEffect(() => {
+    setPriceProfile(tabToProfile(activeTab));
+  }, [activeTab, setPriceProfile]);
+
   const {
     // inputs
     select_delivery,
@@ -91,12 +106,12 @@ const Calculator: React.FC = () => {
       alert('Пожалуйста, введите ваше имя');
       return;
     }
-    
+
     if (!userInfo.email.trim() || !userInfo.email.includes('@')) {
       alert('Пожалуйста, введите корректный email');
       return;
     }
-    
+
     const phoneNumber = userInfo.phone.replace(/^\+\d+/, '');
     if (phoneNumber.length < 10) {
       alert('Пожалуйста, введите корректный номер телефона');
@@ -135,92 +150,111 @@ const Calculator: React.FC = () => {
     }
   };
 
+  // ВСПОМОГАТЕЛЬНО: получаем набор цен для активной вкладки (профиль)
+  const getSkuSetForActiveTab = () => {
+    const profile = tabToProfile(activeTab);
+    // если нет priceByTab — используем базовый sku
+    // @ts-expect-error: priceByTab может быть не объявлен в ранних версиях
+    return calculatorConfig.priceByTab?.[profile] ?? calculatorConfig.sku;
+  };
+
   const getOrderItems = () => {
-    const items = [];
-    
+    const items: Array<{
+      id: string;
+      name: string;
+      sku: string;
+      quantity: number;
+      price: number;
+      image: string;
+    }> = [];
+
+    const skuSet = getSkuSetForActiveTab();
+
     if (input_tr > 0) {
       items.push({
         id: 'transmitter',
         name: 'Передатчик',
         sku: 'radiosync-x',
         quantity: input_tr,
-        price: calculatorConfig.sku.transmitter.unitPrice,
+        price: skuSet.transmitter.unitPrice,
         image: '🔴'
       });
     }
-    
+
     if (input_rc > 0) {
       items.push({
         id: 'receiver',
         name: 'Приёмник',
         sku: 'radiosync-r',
         quantity: input_rc,
-        price: calculatorConfig.sku.receiver.unitPrice,
+        price: skuSet.receiver.unitPrice,
         image: '🔵'
       });
     }
-    
+
     if (input_mic > 0) {
       items.push({
         id: 'microphone',
         name: 'Микрофон',
         sku: 'radiosync-m',
         quantity: input_mic,
-        price: calculatorConfig.sku.microphone.unitPrice,
+        price: skuSet.microphone.unitPrice,
         image: '🎤'
       });
     }
-    
+
     if (select_headphones && qty_headphones > 0) {
       items.push({
         id: 'headphones',
-        name: `Наушники (${calculatorConfig.sku.headphones[select_headphones].name})`,
+        name: `Наушники (${skuSet.headphones[select_headphones].name})`,
         sku: 'radiosync-h',
         quantity: qty_headphones,
-        price: calculatorConfig.sku.headphones[select_headphones].unitPrice,
+        price: skuSet.headphones[select_headphones].unitPrice,
         image: '🎧'
       });
     }
-    
+
     if (select_charger) {
       items.push({
         id: 'charger',
         name: `Зарядное устройство на ${select_charger}`,
         sku: 'radiosync-c',
         quantity: 1,
-        price: calculatorConfig.sku.charger[select_charger].unitPrice,
+        price: skuSet.charger[select_charger].unitPrice,
         image: '🔌'
       });
     }
-    
+
+    // Аудиогид считаем как приёмник профиля
     if (input_audioguide > 0) {
       items.push({
         id: 'audioguide',
         name: 'Аудиогид',
         sku: 'radiosync-ag',
         quantity: input_audioguide,
-        price: calculatorConfig.sku.receiver.unitPrice,
+        price: skuSet.receiver.unitPrice,
         image: '🎧'
       });
     }
-    
+
+    // Триггер считаем как передатчик профиля
     if (input_triggers > 0) {
       items.push({
         id: 'trigger',
         name: 'Триггер',
         sku: 'radiosync-t',
         quantity: input_triggers,
-        price: calculatorConfig.sku.transmitter.unitPrice,
+        price: skuSet.transmitter.unitPrice,
         image: '🔴'
       });
     }
-    
+
     return items;
   };
 
   const updateItemQuantity = (itemId: string, newQuantity: number) => {
     if (newQuantity < 0) return;
-    
+
     switch (itemId) {
       case 'transmitter':
         setTransmitters(newQuantity);
@@ -272,8 +306,6 @@ const Calculator: React.FC = () => {
         break;
     }
   };
-
-
 
   const tabs = [
     {
@@ -359,27 +391,26 @@ const Calculator: React.FC = () => {
           </h1>
           <div>
             <h2 className="text-lg font-semibold mb-3">Выберите продукт</h2>
-            
+
             {/* Tab Navigation */}
             <nav className="flex items-center justify-start gap-3 flex-wrap">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => {setActiveTab(tab.id); clearCart()}}
-                  className={`relative py-2 px-1 font-medium text-sm h-14 w-full xxs:max-w-[199px] rounded-2xl cursor-pointer ${
-                    activeTab === tab.id
+                  onClick={() => { setActiveTab(tab.id); clearCart(); }}
+                  className={`relative py-2 px-1 font-medium text-sm h-14 w-full xxs:max-w-[199px] rounded-2xl cursor-pointer ${activeTab === tab.id
                       ? 'bg-custom-gradient text-white'
                       : 'bg-[#e5ebee]'
-                  }`}
+                    }`}
                 >
                   {tab.name}
                   {/* tooltip */}
                   <span className={`absolute flex items-center justify-center cursor-pointer size-4 ${activeTab !== tab.id ? 'bg-custom-gradient text-white' : 'bg-white text-[#359AD7]'} rounded-full top-2 right-4 z-10 group`}>
                     <MdKeyboardArrowRight className='text-lg' />
-                    
+
                     {/* Tooltip */}
-                    <div className="absolute min-w-[165px] w-full invisible opacity-0 group-hover:visible group-hover:opacity-100 bg-custom-gradient text-white text-xs rounded-md px-2 py-1 text-left transition-all duration-200 ease-in-out z-20 -right-5 -top-1 transform translate-x-full">
-                     Функции автоматической работы без гида и ручного управления
+                    <div className="absolute min-w=[165px] w-full invisible opacity-0 group-hover:visible group-hover:opacity-100 bg-custom-gradient text-white text-xs rounded-md px-2 py-1 text-left transition-all duration-200 ease-in-out z-20 -right-5 -top-1 transform translate-x-full">
+                      Функции автоматической работы без гида и ручного управления
                     </div>
                   </span>
                 </button>
@@ -402,7 +433,7 @@ const Calculator: React.FC = () => {
                   </select>
                   {/* Custom arrow */}
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                  <TiArrowSortedDown />
+                    <TiArrowSortedDown />
                   </div>
                 </div>
               </div>
@@ -411,47 +442,7 @@ const Calculator: React.FC = () => {
           </div>
 
           {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div>
-              <div className="md:text-lg font-semibold mb-1">Промокод</div>
-              <div className="flex h-10 items-center border border-black rounded-lg overflow-hidden mt-2">
-                <input 
-                  type="text" 
-                  value={promo} 
-                  onChange={(e)=>setPromo(e.target.value)}
-                  className="flex-1 border-none outline-none px-5" 
-                  placeholder='0'
-                />
-              </div>
-            </div>
-            <div>
-              <div className="md:text-lg font-semibold mb-1">НДС</div>
-              <div className="flex items-center h-10 gap-3">
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" checked={vatIncluded} onChange={(e)=>setVatIncluded(e.target.checked)} />
-                  <span className="text-sm">цены с НДС</span>
-                </label>
-                <input type="number" min={0} max={100} step={0.1} value={vatRate} onChange={(e)=>setVatRate(Number(e.target.value))} className="w-24 h-10 rounded-lg border border-black px-2" />
-                <span className="text-sm">%</span>
-              </div>
-            </div>
-            <div>
-              <div className="md:text-lg font-semibold mb-1">Кол-во комплектов</div>
-              <div className="flex 0 items-center border border-black rounded-lg overflow-hidden mt-2">
-                <input 
-                  type="text" 
-                  value={bundles === 0 ? '' : bundles} 
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    // Only allow numbers
-                    if (/^\d*$/.test(value)) {
-                      setBundles(Number(e.target.value));
-                    }
-                  }}
-                  className="flex-1 border-none outline-none px-5" 
-                  placeholder='0'
-                />
-              </div>
-            </div>
+            ...
           </div> */}
 
           <div className="flex gap-3 flex-wrap">
@@ -461,13 +452,7 @@ const Calculator: React.FC = () => {
           </div>
 
           {/* Webhook Modal */}
-          {/* <WebhookModal
-            isOpen={showWebhookForm}
-            onClose={() => setShowWebhookForm(false)}
-            webhookUrl={webhookUrl}
-            onWebhookUrlChange={setWebhookUrl}
-            onSubmit={handleWebhookSubmit}
-          /> */}
+          {/* <WebhookModal ... /> */}
 
           {/* Order Modal */}
           <OrderModal
@@ -507,30 +492,20 @@ const Calculator: React.FC = () => {
                 <span>Подытог:</span>
                 <span>{formatPrice(subtotal || 0)}</span>
               </div>
-              
+
               {/* Промокод - временно отключено */}
-              {/* {promoDiscountAmount > 0 && (
-                <div className="flex justify-between text-sm text-green-600">
-                  <span>Промокод:</span>
-                  <span>-{formatPrice(promoDiscountAmount)}</span>
-                </div>
-              )} */}
-              
+              {/* {promoDiscountAmount > 0 && (...)} */}
+
               {shippingCost > 0 && (
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Доставка:</span>
                   <span>{formatPrice(shippingCost)}</span>
                 </div>
               )}
-              
+
               {/* НДС - временно отключено */}
-              {/* {vatAmount > 0 && (
-                <div className="flex justify-between text-sm text-gray-600">
-                  <span>НДС ({vatRate}%):</span>
-                  <span>{formatPrice(vatAmount)}</span>
-                </div>
-              )} */}
-              
+              {/* {vatAmount > 0 && (...)} */}
+
               <hr className="border-gray-200" />
             </div>
             {/* Total */}
@@ -540,22 +515,18 @@ const Calculator: React.FC = () => {
                 <span className="text-3xl font-bold text-primary-600">{formatPrice(total)}</span>
               </div>
               {/* Комплекты - временно отключено */}
-              {/* {bundles > 1 && (
-                <div className="text-xs text-gray-500 mt-1">
-                  За {bundles} комплект{bundles > 1 ? (bundles > 4 ? 'ов' : 'а') : ''}
-                </div>
-              )} */}
+              {/* {bundles > 1 && (...)} */}
             </div>
-            
+
             {/* Action buttons */}
             <div className="space-y-3">
-              <button 
+              <button
                 onClick={() => setShowOrderModal(true)}
                 className="w-full h-10 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors"
               >
                 ОФОРМИТЬ ЗАКАЗ
               </button>
-              <button 
+              <button
                 onClick={handleAddToCart}
                 className="w-full h-10 rounded-lg border border-gray-300 text-gray-700 text-sm hover:bg-gray-50 transition-colors"
               >
