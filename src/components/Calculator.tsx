@@ -152,8 +152,10 @@ const Calculator: React.FC = () => {
 
   // ВСПОМОГАТЕЛЬНО: получаем набор цен для активной вкладки (профиль)
   const getSkuSetForActiveTab = () => {
-    const profile = tabToProfile(activeTab);
-    // если нет priceByTab — используем базовый sku
+    const key = tabToProfile(activeTab);
+    const cfg: any = calculatorConfig as any;
+    const priceByTab = cfg.priceByTab as Record<string, any> | undefined;
+    return (priceByTab && priceByTab[key]) ? priceByTab[key] : cfg.sku;
   };
 
   const getOrderItems = () => {
