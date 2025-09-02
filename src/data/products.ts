@@ -51,12 +51,12 @@ export const calculatorConfig: CalculatorConfig = {
 
   // Фолбэк (базовый прайс, если профиль не найден)
   sku: {
-    transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 10000 },
-    receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 3000 },
+    transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 5100 },
+    receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 1200 },
     microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2000 },
     headphones: {
-      in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 700 },
-      on_ear: { sku: 'HP-ON', name: 'Наушники (накладные)', unitPrice: 1200 },
+      in_ear: { sku: 'HP-IN', name: 'Наушники (Многоразовые)', unitPrice: 500 },
+      on_ear: { sku: 'HP-ON', name: 'Наушники (Одноразовые)', unitPrice: 30 },
       over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 2000 }
     },
     charger: {
@@ -69,13 +69,12 @@ export const calculatorConfig: CalculatorConfig = {
   // Разные цены по вкладкам
   priceByTab: {
     radioguide: {
-      transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 11500 },
-      receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 3500 },
+      transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 5100 },
+      receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 1200 },
       microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2000 },
       headphones: {
-        in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 700 },
-        on_ear: { sku: 'HP-ON', name: 'Наушники (накладные)', unitPrice: 1200 },
-        over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 2000 }
+        in_ear: { sku: 'HP-IN', name: 'Наушники (Одноразовые)', unitPrice: 30 },
+        on_ear: { sku: 'HP-ON', name: 'Наушники (Многоразовые)', unitPrice: 500 },
       },
       charger: {
         10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 8000 },
@@ -85,8 +84,8 @@ export const calculatorConfig: CalculatorConfig = {
     },
 
     audioguide: {
-      transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 9800 },
-      receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 3200 },
+      transmitter: { sku: 'TX', name: 'Аудиогид', unitPrice: 11500 },
+      receiver: { sku: 'RX', name: 'Триггер', unitPrice: 5000 },
       microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 1800 },
       headphones: {
         in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 650 },
@@ -101,8 +100,8 @@ export const calculatorConfig: CalculatorConfig = {
     },
 
     uniguide: {
-      transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 10500 },
-      receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 3000 },
+      transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 16400 },
+      receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 8200 },
       microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2000 },
       headphones: {
         in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 700 },
