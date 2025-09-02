@@ -415,6 +415,7 @@ const useCalculatorStore = create<CalculatorState & CalculatorActions>((set, get
         select_charger: null,
         input_audioguide: 0,
         input_triggers: 0,
+        subtotal: 0,
         // promo: '', // временно отключено
         // bundles: 1, // временно отключено
         subtotal: 0,
