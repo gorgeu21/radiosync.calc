@@ -154,8 +154,6 @@ const Calculator: React.FC = () => {
   const getSkuSetForActiveTab = () => {
     const profile = tabToProfile(activeTab);
     // если нет priceByTab — используем базовый sku
-    // @ts-expect-error: priceByTab может быть не объявлен в ранних версиях
-    return calculatorConfig.priceByTab?.[profile] ?? calculatorConfig.sku;
   };
 
   const getOrderItems = () => {
@@ -399,8 +397,8 @@ const Calculator: React.FC = () => {
                   key={tab.id}
                   onClick={() => { setActiveTab(tab.id); clearCart(); }}
                   className={`relative py-2 px-1 font-medium text-sm h-14 w-full xxs:max-w-[199px] rounded-2xl cursor-pointer ${activeTab === tab.id
-                      ? 'bg-custom-gradient text-white'
-                      : 'bg-[#e5ebee]'
+                    ? 'bg-custom-gradient text-white'
+                    : 'bg-[#e5ebee]'
                     }`}
                 >
                   {tab.name}
