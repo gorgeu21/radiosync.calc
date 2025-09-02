@@ -91,6 +91,7 @@ export interface CalculatorState {
   discountAmount: number;
   vatAmount: number;
   shippingCost: number;
+  subtotal: number;
   total: number;
 
   // Параметры заказа

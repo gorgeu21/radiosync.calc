@@ -86,7 +86,6 @@ const useCalculatorStore = create<CalculatorState & CalculatorActions>((set, get
     selectedProducts: [],
     shipping: null as Shipping | null,
     discount: null as Discount | null,
-    subtotal: 0,
     // volumeDiscountAmount: 0,
     promoDiscountAmount: 0,
     discountAmount: 0,
