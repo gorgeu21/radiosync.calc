@@ -102,7 +102,6 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
               <option value="">Не выбрано</option>
               <option value="in_ear">Вкладыши</option>
               <option value="on_ear">Накладные</option>
-              <option value="over_ear">Полноразмерные</option>
             </select>
             {/* Custom arrow */}
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
