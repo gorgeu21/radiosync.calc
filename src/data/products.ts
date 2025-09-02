@@ -75,6 +75,7 @@ export const calculatorConfig: CalculatorConfig = {
       headphones: {
         in_ear: { sku: 'HP-IN', name: 'Наушники (Одноразовые)', unitPrice: 30 },
         on_ear: { sku: 'HP-ON', name: 'Наушники (Многоразовые)', unitPrice: 500 },
+        over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 1900 }
       },
       charger: {
         10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 8000 },
