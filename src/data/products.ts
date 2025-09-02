@@ -163,3 +163,152 @@ export const calculatorConfig: CalculatorConfig = {
     { code: 'FIX5000', type: 'fixed', value: 5000, minAmount: 30000, stackWithVolume: false }
   ]
 };
+// ... существующие импорты и типы ...
+
+export type PriceProfile = 'radioguide' | 'audioguide' | 'uniguide';
+
+export interface SkuSet {
+  transmitter: SkuPrice;
+  receiver: SkuPrice;
+  microphone: SkuPrice;
+  headphones: Record<HeadphonesType, SkuPrice>;
+  charger: Record<ChargerCapacity, SkuPrice>;
+}
+
+export interface CalculatorConfig {
+  currency: string;
+  vatRateDefault: number;
+
+  // Базовый прайс
+  sku: SkuSet;
+
+  // Новые профили по вкладкам
+  priceByTab: Record<PriceProfile, SkuSet>;
+
+  volumeDiscounts: VolumeDiscountRule[];
+  shipping: ShippingMatrix;
+  promos: PromoRule[];
+}
+export const calculatorConfig: CalculatorStore = {
+  // ... остальные параметры ...
+
+  // Базовый прайс
+  sku: {
+    transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 10000 },
+    receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 3000 },
+    microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2000 },
+    headphones: {
+      in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 700 },
+      on_ear: { sku: 'HP-ON', name: 'Наушники (накладные)', unitPrice: 1200 },
+      over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 2000 }
+    },
+    charger: {
+      10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 8000 },
+      20: { sku: 'CH-20', name: 'Зарядное устройство на 20', unitPrice: 15000 },
+      30: { sku: 'CH-30', name: 'Зарядное устройство на 30', unitPrice: 21000 }
+    }
+  },
+
+  // Новые профили прайсов
+  priceByTab: {
+    radioguide: {
+      transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 1 },
+      receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 3 },
+      microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2 },
+      headphones: {
+        in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 700 },
+        on_ear: { sku: 'HP-ON', name: 'Наушники (накладные)', unitPrice: 1200 },
+        over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 2000 }
+      },
+      charger: {
+        10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 8000 },
+        20: { sku: 'CH-20', name: 'Зарядное устройство на 20', unitPrice: 15000 },
+        30: { sku: 'CH-30', name: 'Зарядное устройство на 30', unitPrice: 21000 }
+      }
+    },
+
+    audioguide: {
+      transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 9800 },
+      receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 3200 },
+      microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 1800 },
+      headphones: {
+        in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 650 },
+        on_ear: { sku: 'HP-ON', name: 'Наушники (накладные)', unitPrice: 1100 },
+        over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 1900 }
+      },
+      charger: {
+        10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 7900 },
+        20: { sku: 'CH-20', name: 'Зарядное устройство на 20', unitPrice: 14800 },
+        30: { sku: 'CH-30', name: 'Зарядное устройство на 30', unitPrice: 20800 }
+      }
+    },
+
+    uniguide: {
+      transmitter: { sku: 'TX', name: 'Передатчик', unitPrice: 10500 },
+      receiver: { sku: 'RX', name: 'Приёмник', unitPrice: 3000 },
+      microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 2000 },
+      headphones: {
+        in_ear: { sku: 'HP-IN', name: 'Наушники (вкладыши)', unitPrice: 700 },
+        on_ear: { sku: 'HP-ON', name: 'Наушники (накладные)', unitPrice: 1200 },
+        over_ear: { sku: 'HP-OV', name: 'Наушники (полноразмерные)', unitPrice: 2000 }
+      },
+      charger: {
+        10: { sku: 'CH-10', name: 'Зарядное устройство на 10', unitPrice: 8000 },
+        20: { sku: 'CH-20', name: 'Зарядное устройство на 20', unitPrice: 15000 },
+        30: { sku: 'CH-30', name: 'Зарядное устройство на 30', unitPrice: 21000 }
+      }
+    }
+  },
+
+  // ... остальные параметры ...
+};
+// В интерфейсе состояния добавьте:
+priceProfile: PriceProfile;
+
+// В экшенах добавьте:
+setPriceProfile: (profile: PriceProfile) => void;
+
+// Инициализация:
+const store: CalculatorState & CalculatorActions = {
+  // ...
+  priceProfile: 'radioguide',
+  setPriceProfile: (p) => {
+    set({ priceProfile: p });
+    get().calculateTotal();
+  },
+  // ...
+};
+
+// Обновленный метод calculateTotal:
+calculateTotal: () => {
+  const state = get();
+  const { priceProfile } = state;
+
+  // Используем цены из активного профиля или фолбэк
+  const skuSet = calculatorConfig.priceByTab?.[priceProfile] || calculatorConfig.sku;
+
+  // Остальная логика расчёта
+  // ...
+}
+import useCalculatorStore from '../store/calculatorStore';
+
+const Calculator: React.FC = () => {
+  const [activeTab, setActiveTab] = useState(0);
+  const setPriceProfile = useCalculatorStore(s => s.setPriceProfile);
+
+  // Маппинг вкладок к профилям
+  const tabToProfile = (tab: number): PriceProfile => {
+    switch (tab) {
+      case 0: return 'radioguide';
+      case 1: return 'audioguide';
+      case 2: return 'uniguide';
+      default: return 'radioguide';
+    }
+  };
+
+  useEffect(() => {
+    setPriceProfile(tabToProfile(activeTab));
+  }, [activeTab]);
+
+  // ... остальной код компонента ...
+};
