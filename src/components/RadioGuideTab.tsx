@@ -36,9 +36,9 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
           <div>
             <div className="md:text-lg font-semibold mb-1">Приёмники</div>
             <div className="flex h-10 items-center border border-black rounded-lg overflow-hidden">
-              <input 
-                type="text" 
-                value={input_rc === 0 ? '' : input_rc} 
+              <input
+                type="text"
+                value={input_rc === 0 ? '' : input_rc}
                 onChange={(e) => {
                   const value = e.target.value;
                   // Only allow numbers
@@ -46,7 +46,7 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
                     setReceivers(Number(value));
                   }
                 }}
-                className="flex-1 text-xs px-5 border-none outline-none" 
+                className="flex-1 text-xs px-5 border-none outline-none"
                 placeholder='0'
               />
             </div>
@@ -54,9 +54,9 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
           <div>
             <div className="md:text-lg font-semibold mb-1">Передатчики</div>
             <div className="flex h-10 items-center border border-black rounded-lg overflow-hidden">
-              <input 
-                type="text" 
-                value={input_tr === 0 ? '' : input_tr} 
+              <input
+                type="text"
+                value={input_tr === 0 ? '' : input_tr}
                 onChange={(e) => {
                   const value = e.target.value;
                   // Only allow numbers
@@ -64,7 +64,7 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
                     setTransmitters(Number(value));
                   }
                 }}
-                className="flex-1 text-xs px-5 border-none outline-none" 
+                className="flex-1 text-xs px-5 border-none outline-none"
                 placeholder='0'
               />
             </div>
@@ -89,7 +89,7 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
           </div> */}
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-5">
         <div>
           <div className="md:text-lg font-semibold mb-1">Наушники</div>
@@ -100,8 +100,8 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
               className="w-full text-xs h-10 rounded-lg outline-none border border-black px-3 appearance-none pr-10"
             >
               <option value="">Не выбрано</option>
-              <option value="in_ear">Вкладыши</option>
-              <option value="on_ear">Накладные</option>
+              <option value="in_ear">Одноразовые</option>
+              <option value="on_ear">Многоразовые</option>
             </select>
             {/* Custom arrow */}
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
@@ -110,9 +110,9 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
           </div>
           {select_headphones && (
             <div className="flex h-10 items-center border border-black rounded-lg overflow-hidden mt-2">
-              <input 
-                type="text" 
-                value={qty_headphones === 0 ? '' : qty_headphones} 
+              <input
+                type="text"
+                value={qty_headphones === 0 ? '' : qty_headphones}
                 onChange={(e) => {
                   const value = e.target.value;
                   // Only allow numbers
@@ -120,7 +120,7 @@ const RadioGuideTab: React.FC<RadioGuideTabProps> = ({
                     setHeadphonesQty(Number(e.target.value));
                   }
                 }}
-                className="flex-1 border-none outline-none px-5" 
+                className="flex-1 border-none outline-none px-5"
                 placeholder='0'
               />
             </div>

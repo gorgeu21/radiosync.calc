@@ -82,8 +82,8 @@ const UniGuideTab: React.FC<UniGuideTabProps> = ({
               className="w-full text-xs h-10 rounded-lg outline-none border border-black px-3 appearance-none pr-10"
             >
               <option value="">Не выбрано</option>
-              <option value="in_ear">Вкладыши</option>
-              <option value="on_ear">Накладные</option>
+              <option value="in_ear">Одноразовые</option>
+              <option value="on_ear">Многоразовые</option>
             </select>
             {/* Custom arrow */}
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">

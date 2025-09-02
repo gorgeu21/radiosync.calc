@@ -33,11 +33,11 @@ const AudioGuideTab: React.FC<AudioGuideTabProps> = ({
       <div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <div className="md:text-lg font-semibold mb-1 capitalize">Приёмники</div>
+            <div className="md:text-lg font-semibold mb-1 capitalize">Аудиогид</div>
             <div className="flex h-10 items-center border border-black rounded-lg overflow-hidden">
-              <input 
-                type="text" 
-                value={input_audioguide === 0 ? '' : input_audioguide} 
+              <input
+                type="text"
+                value={input_audioguide === 0 ? '' : input_audioguide}
                 onChange={(e) => {
                   const value = e.target.value;
                   // Only allow numbers
@@ -45,17 +45,17 @@ const AudioGuideTab: React.FC<AudioGuideTabProps> = ({
                     setAudioguideQty(Number(value));
                   }
                 }}
-                className="flex-1 text-xs border-none outline-none px-5" 
+                className="flex-1 text-xs border-none outline-none px-5"
                 placeholder='0'
               />
             </div>
           </div>
           <div>
-            <div className="md:text-lg font-semibold mb-1 capitalize">Передатчики</div>
+            <div className="md:text-lg font-semibold mb-1 capitalize">Триггер</div>
             <div className="flex h-10 items-center border border-black rounded-lg overflow-hidden">
-              <input 
-                type="text" 
-                value={input_triggers === 0 ? '' : input_triggers} 
+              <input
+                type="text"
+                value={input_triggers === 0 ? '' : input_triggers}
                 onChange={(e) => {
                   const value = e.target.value;
                   // Only allow numbers
@@ -63,7 +63,7 @@ const AudioGuideTab: React.FC<AudioGuideTabProps> = ({
                     setTriggersQty(Number(value));
                   }
                 }}
-                className="flex-1 text-xs border-none outline-none px-5" 
+                className="flex-1 text-xs border-none outline-none px-5"
                 placeholder='0'
               />
             </div>
@@ -81,8 +81,8 @@ const AudioGuideTab: React.FC<AudioGuideTabProps> = ({
               className="w-full text-xs h-10 rounded-lg outline-none border border-black px-3 appearance-none pr-10"
             >
               <option value="">Не выбрано</option>
-              <option value="in_ear">Вкладыши</option>
-              <option value="on_ear">Накладные</option>
+              <option value="in_ear">Одноразовые</option>
+              <option value="on_ear">Многоразовые</option>
             </select>
             {/* Custom arrow */}
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
@@ -91,9 +91,9 @@ const AudioGuideTab: React.FC<AudioGuideTabProps> = ({
           </div>
           {select_headphones && (
             <div className="flex h-10 items-center border border-black rounded-lg overflow-hidden mt-2">
-              <input 
-                type="text" 
-                value={qty_headphones === 0 ? '' : qty_headphones} 
+              <input
+                type="text"
+                value={qty_headphones === 0 ? '' : qty_headphones}
                 onChange={(e) => {
                   const value = e.target.value;
                   // Only allow numbers
@@ -101,7 +101,7 @@ const AudioGuideTab: React.FC<AudioGuideTabProps> = ({
                     setHeadphonesQty(Number(e.target.value));
                   }
                 }}
-                className="flex-1 text-xs border-none outline-none px-5" 
+                className="flex-1 text-xs border-none outline-none px-5"
                 placeholder='0'
               />
             </div>
@@ -129,7 +129,7 @@ const AudioGuideTab: React.FC<AudioGuideTabProps> = ({
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };

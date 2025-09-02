@@ -98,16 +98,16 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       userInfo.phone.startsWith("+998")
                         ? "+998"
                         : userInfo.phone.startsWith("+7")
-                        ? "+7"
-                        : "+1"
+                          ? "+7"
+                          : "+1"
                     }
                     onChange={(e) => {
                       const newCountryCode = e.target.value;
                       const currentCountryCode = userInfo.phone.startsWith("+998")
                         ? "+998"
                         : userInfo.phone.startsWith("+7")
-                        ? "+7"
-                        : "+1";
+                          ? "+7"
+                          : "+1";
                       const phoneNumber = userInfo.phone.replace(currentCountryCode, "");
                       onUserInfoChange({
                         ...userInfo,
@@ -126,16 +126,16 @@ const OrderModal: React.FC<OrderModalProps> = ({
                     const currentCountryCode = userInfo.phone.startsWith("+998")
                       ? "+998"
                       : userInfo.phone.startsWith("+7")
-                      ? "+7"
-                      : "+1";
+                        ? "+7"
+                        : "+1";
                     return userInfo.phone.replace(currentCountryCode, "");
                   })()}
                   onChange={(e) => {
                     const countryCode = userInfo.phone.startsWith("+998")
                       ? "+998"
                       : userInfo.phone.startsWith("+7")
-                      ? "+7"
-                      : "+1";
+                        ? "+7"
+                        : "+1";
                     onUserInfoChange({
                       ...userInfo,
                       phone: countryCode + e.target.value,
@@ -167,10 +167,10 @@ const OrderModal: React.FC<OrderModalProps> = ({
           {/* Price breakdown */}
           <div className="space-y-3 mb-6">
             <div className="flex justify-between text-sm text-gray-600">
-              <span>Подытог:</span>
+              <span>Итого от:</span>
               <span>{formatPrice(orderTotal || 0)}</span>
             </div>
-            
+
             <hr className="border-gray-200" />
           </div>
           <button
