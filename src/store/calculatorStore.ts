@@ -418,7 +418,6 @@ const useCalculatorStore = create<CalculatorState & CalculatorActions>((set, get
         subtotal: 0,
         // promo: '', // временно отключено
         // bundles: 1, // временно отключено
-        subtotal: 0,
         // volumeDiscountAmount: 0,
         // promoDiscountAmount: 0, // временно отключено
         discountAmount: 0,
