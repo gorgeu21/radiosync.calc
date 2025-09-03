@@ -226,7 +226,7 @@ const Calculator: React.FC = () => {
     {
       id: 0,
       name: 'Радиогид',
-      tooltip: 'Набор для экскурсий с ведущим: передатчик гида + приёмники слушателей.',
+      tooltip: 'Беспроводная передача звука для групповых экскурсий.',
       component: (
         <RadioGuideTab
           input_rc={input_rc}
@@ -246,7 +246,7 @@ const Calculator: React.FC = () => {
     {
       id: 1,
       name: 'Аудиогид',
-      tooltip: 'Самостоятельный режим: слушатель управляет воспроизведением без гида.',
+      tooltip: 'Самостоятельные экскурсии без гида.',
       component: (
         <AudioGuideTab
           input_audioguide={input_audioguide}
@@ -265,7 +265,7 @@ const Calculator: React.FC = () => {
     {
       id: 2,
       name: 'Юнигид',
-      tooltip: 'Комбинированный комплект: работает и с гидом, и автономно.',
+      tooltip: '2 в 1: сочетание живых экскурсий с гидом и заранее записанных аудиодорожек.',
       component: (
         <UniGuideTab
           input_rc={input_rc}
@@ -285,7 +285,7 @@ const Calculator: React.FC = () => {
     {
       id: 3,
       name: 'Наушники',
-      tooltip: 'Выберите тип наушников: одноразовые или многоразовые под вашу задачу.',
+      tooltip: 'Одноразовые или многоразовые наушники для разных типов экскурсий.',
       component: (
         <HeadphonesTab
           select_headphones={select_headphones}
