@@ -12,7 +12,7 @@ interface OrderItem {
 interface UserInfo {
   name: string;
   email: string;
-  phone: string;
+  phone: string; // хранит то, что ввёл пользователь (может быть с пробелами и скобками)
 }
 
 interface OrderModalProps {
@@ -28,6 +28,19 @@ interface OrderModalProps {
   orderTotal: number;
 }
 
+/** Нормализуем телефон для отправки/валидации: оставляем + (если первый) и цифры */
+function normalizePhone(raw: string): string {
+  const cleaned = (raw || "").replace(/[^\d+]/g, "");
+  // разрешим только один плюс и только в начале
+  return cleaned.replace(/(?!^)\+/g, "");
+}
+
+/** Мягкая проверка: + опционально, 7–15 цифр */
+function isValidPhone(raw: string): boolean {
+  const p = normalizePhone(raw);
+  return /^\+?\d{7,15}$/.test(p);
+}
+
 const OrderModal: React.FC<OrderModalProps> = ({
   isOpen,
   onClose,
@@ -41,8 +54,9 @@ const OrderModal: React.FC<OrderModalProps> = ({
   if (!isOpen) return null;
 
   const [consent, setConsent] = React.useState(false);
+  const [phoneError, setPhoneError] = React.useState<string>("");
 
-  // красивый текст для Tilda (поле "order")
+  // текст корзины для Tilda (поле "order")
   const orderText = React.useMemo(
     () =>
       orderItems
@@ -55,30 +69,34 @@ const OrderModal: React.FC<OrderModalProps> = ({
     [orderItems]
   );
 
+  /** Отправка данных в родителя (страница Tilda) */
   const sendToTilda = () => {
-    try {
-      const payload = {
-        // Имена полей ровно как в форме Tilda:
-        name: userInfo.name ?? "",
-        email: userInfo.email ?? "",
-        phone: userInfo.phone ?? "",
-        order: orderText,
-        total: orderTotal ?? 0,
-        orderjson: JSON.stringify({
-          items: orderItems.map((i) => ({
-            id: i.id,
-            sku: i.sku,
-            name: i.name,
-            qty: i.quantity,
-            price: i.price,
-            sum: i.price * i.quantity,
-          })),
-          total: orderTotal ?? 0,
-          source: typeof window !== "undefined" ? window.location.href : "",
-        }),
-      };
+    const normalizedPhone = normalizePhone(userInfo.phone);
 
-      // сообщение родителю (странице Tilda)
+    const payload = {
+      // имена полей ровно как в форме Tilda (#rec1261843811)
+      name: userInfo.name ?? "",
+      email: userInfo.email ?? "",
+      phone: normalizedPhone,
+      order: orderText,
+      total: orderTotal ?? 0,
+      orderjson: JSON.stringify({
+        items: orderItems.map((i) => ({
+          id: i.id,
+          sku: i.sku,
+          name: i.name,
+          qty: i.quantity,
+          price: i.price,
+          sum: i.price * i.quantity,
+        })),
+        total: orderTotal ?? 0,
+        phone_raw: userInfo.phone,
+        phone_normalized: normalizedPhone,
+        source: typeof window !== "undefined" ? window.location.href : "",
+      }),
+    };
+
+    try {
       window.parent?.postMessage({ type: "RS_ORDER_SUBMIT", payload }, "*");
     } catch (e) {
       console.warn("postMessage failed", e);
@@ -88,14 +106,25 @@ const OrderModal: React.FC<OrderModalProps> = ({
   const handleClose = () => {
     onClose();
     setConsent(false);
+    setPhoneError("");
     onUserInfoChange({ name: "", email: "", phone: "" });
   };
 
   const handleSubmitClick = () => {
-    if (!consent || orderItems.length === 0) return;
-    // 1) отправляем заказ в Tilda
+    if (orderItems.length === 0) return;
+
+    // валидация телефона перед отправкой
+    if (!isValidPhone(userInfo.phone)) {
+      setPhoneError("Проверьте номер: допустимы только + и 7–15 цифр.");
+      return;
+    }
+    setPhoneError("");
+
+    if (!consent) return;
+
+    // 1) в Tilda (через postMessage)
     sendToTilda();
-    // 2) запускаем вашу текущую логику (если она есть)
+    // 2) ваша внутренняя логика
     onSubmit();
   };
 
@@ -144,7 +173,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
               />
             </div>
 
-            {/* Телефон (одно поле без селектора страны) */}
+            {/* Телефон (одно поле, без селектора страны) */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Ваш телефон
@@ -157,16 +186,19 @@ const OrderModal: React.FC<OrderModalProps> = ({
                 placeholder="+79991234567"
                 value={userInfo.phone}
                 onChange={(e) => {
-                  const v = e.target.value
-                    .replace(/[^\d+()\s-]/g, "")
-                    .replace(/(?!^)\+/g, "");
+                  // разрешим + только в начале и не будем мешать пользователю вводить пробелы/скобки/дефисы
+                  const v = e.target.value.replace(/(?!^)\+/g, "");
                   onUserInfoChange({ ...userInfo, phone: v });
+                  // уберём ошибку при редактировании
+                  if (phoneError) setPhoneError("");
                 }}
-                pattern="^\+?[0-9\s\-()]{6,20}$"
                 className="w-full h-10 border border-black rounded-lg px-3 outline-none"
               />
+              {phoneError && (
+                <p className="mt-1 text-xs text-red-600">{phoneError}</p>
+              )}
 
-              {/* Чекбокс согласия под телефоном */}
+              {/* Чекбокс согласия */}
               <label className="mt-3 flex items-start gap-2 select-none">
                 <input
                   type="checkbox"
