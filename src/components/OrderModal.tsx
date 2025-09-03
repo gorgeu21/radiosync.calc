@@ -40,13 +40,63 @@ const OrderModal: React.FC<OrderModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  // Локальное состояние согласия с политикой
   const [consent, setConsent] = React.useState(false);
+
+  // красивый текст для Tilda (поле "order")
+  const orderText = React.useMemo(
+    () =>
+      orderItems
+        .map(
+          (x, i) =>
+            `${i + 1}) ${x.name} x${x.quantity} — ${x.price} ₽ = ${x.price * x.quantity
+            } ₽`
+        )
+        .join("\n"),
+    [orderItems]
+  );
+
+  const sendToTilda = () => {
+    try {
+      const payload = {
+        // Имена полей ровно как в форме Tilda:
+        name: userInfo.name ?? "",
+        email: userInfo.email ?? "",
+        phone: userInfo.phone ?? "",
+        order: orderText,
+        total: orderTotal ?? 0,
+        orderjson: JSON.stringify({
+          items: orderItems.map((i) => ({
+            id: i.id,
+            sku: i.sku,
+            name: i.name,
+            qty: i.quantity,
+            price: i.price,
+            sum: i.price * i.quantity,
+          })),
+          total: orderTotal ?? 0,
+          source: typeof window !== "undefined" ? window.location.href : "",
+        }),
+      };
+
+      // сообщение родителю (странице Tilda)
+      window.parent?.postMessage({ type: "RS_ORDER_SUBMIT", payload }, "*");
+    } catch (e) {
+      console.warn("postMessage failed", e);
+    }
+  };
 
   const handleClose = () => {
     onClose();
     setConsent(false);
     onUserInfoChange({ name: "", email: "", phone: "" });
+  };
+
+  const handleSubmitClick = () => {
+    if (!consent || orderItems.length === 0) return;
+    // 1) отправляем заказ в Tilda
+    sendToTilda();
+    // 2) запускаем вашу текущую логику (если она есть)
+    onSubmit();
   };
 
   return (
@@ -172,10 +222,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
 
           {/* Отправка */}
           <button
-            onClick={() => {
-              if (!consent) return;
-              onSubmit();
-            }}
+            onClick={handleSubmitClick}
             disabled={orderItems.length === 0 || !consent}
             className="w-full h-10 bg-custom-gradient cursor-pointer text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
