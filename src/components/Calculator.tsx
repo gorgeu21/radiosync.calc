@@ -15,7 +15,7 @@ const Calculator: React.FC = () => {
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
-    phone: '+7'
+    phone: '' // ← без префикса +7, пользователь вводит номер целиком
   });
 
   const setPriceProfile = useCalculatorStore(s => s.setPriceProfile);
@@ -61,37 +61,28 @@ const Calculator: React.FC = () => {
       currency: 'RUB'
     }).format(price);
 
+  // onSubmit, который вызывается ИЗ OrderModal после своей валидации и postMessage в Tilda
   const handleOrderSubmit = () => {
-    if (!userInfo.name.trim()) {
-      alert('Пожалуйста, введите ваше имя');
-      return;
+    try {
+      console.log('Order submitted:', {
+        userInfo,
+        order: {
+          delivery: select_delivery,
+          receivers: input_rc,
+          transmitters: input_tr,
+          microphones: input_mic,
+          headphones: { type: select_headphones, quantity: qty_headphones },
+          charger: select_charger,
+          audioguides: input_audioguide,
+          triggers: input_triggers,
+          total
+        }
+      });
+    } finally {
+      setShowOrderModal(false);
+      setUserInfo({ name: '', email: '', phone: '' }); // ← чистим форму
+      // clearCart(); // если хотите очищать корзину после заявки — раскомментируйте
     }
-    if (!userInfo.email.trim() || !userInfo.email.includes('@')) {
-      alert('Пожалуйста, введите корректный email');
-      return;
-    }
-    const phoneNumber = userInfo.phone.replace(/^\+\d+/, '');
-    if (phoneNumber.length < 10) {
-      alert('Пожалуйста, введите корректный номер телефона');
-      return;
-    }
-    console.log('Order submitted:', {
-      userInfo,
-      order: {
-        delivery: select_delivery,
-        receivers: input_rc,
-        transmitters: input_tr,
-        microphones: input_mic,
-        headphones: { type: select_headphones, quantity: qty_headphones },
-        charger: select_charger,
-        audioguides: input_audioguide,
-        triggers: input_triggers,
-        total
-      }
-    });
-    alert('Заказ успешно оформлен!');
-    setShowOrderModal(false);
-    setUserInfo({ name: '', email: '', phone: '+7' });
   };
 
   const handleAddToCart = () => {
@@ -100,7 +91,7 @@ const Calculator: React.FC = () => {
       setShowOrderModal(true);
     } catch (error) {
       console.error('Ошибка корзины:', error);
-      alert('Произошла ошибка при добавлении в корзину');
+      // Можно показать UI-уведомление вместо alert
     }
   };
 
@@ -168,8 +159,8 @@ const Calculator: React.FC = () => {
 
       items.push({
         id: 'charger',
-        name: chargerName,                                // ← берём имя из products.ts
-        sku: cfg?.sku ?? 'radiosync-c',                   // (если есть sku в конфиге — тоже подставим)
+        name: chargerName,
+        sku: cfg?.sku ?? 'radiosync-c',
         quantity: 1,
         price: cfg.unitPrice,
         image: '🔌'
@@ -392,7 +383,6 @@ const Calculator: React.FC = () => {
                 </div>
               ))}
             </div>
-            {/* без Подытога */}
             {shippingCost > 0 && (
               <div className="flex justify-between text-sm text-gray-600 mb-3">
                 <span>Доставка:</span>
