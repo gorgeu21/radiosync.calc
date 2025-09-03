@@ -40,10 +40,13 @@ const OrderModal: React.FC<OrderModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  // Total is provided from the calculator store to ensure consistency
+  // Локальное состояние согласия с политикой
+  const [consent, setConsent] = React.useState(false);
+
   const handleClose = () => {
     onClose();
-    onUserInfoChange({ name: "", email: "", phone: "" }); // не форсируем +7
+    setConsent(false);
+    onUserInfoChange({ name: "", email: "", phone: "" });
   };
 
   return (
@@ -55,10 +58,11 @@ const OrderModal: React.FC<OrderModalProps> = ({
         className="grid md:grid-cols-2 gap-4 bg-white rounded-xl max-w-[99%] lg:max-w-3/4 xl:max-w-[936px]  w-full sm:mx-4 max-h-[90vh] py-12 px-6 lg:px-12 overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* User Information */}
+        {/* Левая колонка: контактные данные */}
         <div className="max-w-[349px] mx-auto md:mx-0 w-full">
           <h3 className="text-lg font-semibold mb-4">Контактная информация</h3>
           <div className="space-y-4">
+            {/* Имя */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Ваше имя
@@ -74,6 +78,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Ваш Email
@@ -89,12 +94,11 @@ const OrderModal: React.FC<OrderModalProps> = ({
               />
             </div>
 
+            {/* Телефон (одно поле без селектора страны) */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Ваш телефон
               </label>
-
-              {/* Одно поле для полного номера */}
               <input
                 type="tel"
                 name="phone"
@@ -103,27 +107,47 @@ const OrderModal: React.FC<OrderModalProps> = ({
                 placeholder="+79991234567"
                 value={userInfo.phone}
                 onChange={(e) => {
-                  // Разрешаем цифры, пробелы, дефисы, скобки и только один плюс в начале
                   const v = e.target.value
-                    .replace(/[^\d+()\s-]/g, "") // убираем посторонние символы
-                    .replace(/(?!^)\+/g, ""); // плюс только в начале
+                    .replace(/[^\d+()\s-]/g, "")
+                    .replace(/(?!^)\+/g, "");
                   onUserInfoChange({ ...userInfo, phone: v });
                 }}
-                // Лёгкая валидация на стороне браузера (опционально)
                 pattern="^\+?[0-9\s\-()]{6,20}$"
                 className="w-full h-10 border border-black rounded-lg px-3 outline-none"
               />
+
+              {/* Чекбокс согласия под телефоном */}
+              <label className="mt-3 flex items-start gap-2 select-none">
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  className="mt-1 h-4 w-4 border border-black rounded"
+                />
+                <span className="text-sm text-gray-600 leading-5">
+                  Я соглашаюсь с{" "}
+                  <a
+                    href="/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline"
+                  >
+                    политикой обработки персональных данных
+                  </a>
+                  .
+                </span>
+              </label>
             </div>
           </div>
         </div>
 
-        {/* items */}
+        {/* Правая колонка: корзина и отправка */}
         <div className="max-w-[346px] w-full mx-auto md:border rounded-2xl md:p-4">
           <div className="text-xl font-semibold mb-6 text-gray-800">
             Ваш комплект
           </div>
 
-          {/* Selected items list */}
+          {/* Состав заказа */}
           <div className="space-y-6 mb-6">
             {orderItems.map((item, index) => (
               <div key={item.id} className="text-gray-800">
@@ -137,22 +161,29 @@ const OrderModal: React.FC<OrderModalProps> = ({
             ))}
           </div>
 
-          {/* Price breakdown */}
+          {/* Итого */}
           <div className="space-y-3 mb-6">
             <div className="flex justify-between text-sm text-gray-600">
               <span>Итого от:</span>
               <span>{formatPrice(orderTotal || 0)}</span>
             </div>
-
             <hr className="border-gray-200" />
           </div>
 
+          {/* Отправка */}
           <button
-            onClick={onSubmit}
-            disabled={orderItems.length === 0}
+            onClick={() => {
+              if (!consent) return;
+              onSubmit();
+            }}
+            disabled={orderItems.length === 0 || !consent}
             className="w-full h-10 bg-custom-gradient cursor-pointer text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            {orderItems.length === 0 ? "Корзина пуста" : "Отправить"}
+            {orderItems.length === 0
+              ? "Корзина пуста"
+              : !consent
+                ? "Подтвердите согласие"
+                : "Отправить"}
           </button>
         </div>
       </div>
