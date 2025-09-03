@@ -127,7 +127,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                 <span className="text-sm text-gray-600 leading-5">
                   Я соглашаюсь с{" "}
                   <a
-                    href="/privacy"
+                    href="https://radiosync.ru/privacypolicy"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 underline"
