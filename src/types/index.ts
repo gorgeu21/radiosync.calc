@@ -20,7 +20,7 @@ export interface Discount {
 
 // ---------- Типы справочников ----------
 export type HeadphonesType = 'in_ear' | 'on_ear';
-export type ChargerCapacity = 10 | 20 | 30 | 40;
+export type ChargerCapacity = 10 | 20 | 30 | 40 | 50 | 60 | 70;
 
 export interface SkuPrice {
   sku: string;

@@ -122,10 +122,13 @@ export const calculatorConfig: CalculatorConfig = {
       },
 
       charger: {
-        10: { sku: 'CH-10', name: 'Кейс с зарядкой (32 слота)', unitPrice: 21900 },
-        20: { sku: 'CH-20', name: 'Кейс транспортировочный (60 слотов)', unitPrice: 8800 },
-        30: { sku: 'CH-30', name: 'Сумка для комплектов', unitPrice: 6500 },
-        40: { sku: 'CH-40', name: 'Беспроводной микрофон', unitPrice: 3610 }
+        10: { sku: 'CH-10', name: 'Беспроводной микрофон', unitPrice: 21900 },
+        20: { sku: 'CH-20', name: 'Докстанция для зарядки (25 слотов)', unitPrice: 8800 },
+        30: { sku: 'CH-30', name: 'Кейс с зарядкой (32 слота)', unitPrice: 6500 },
+        40: { sku: 'CH-40', name: 'Кейс с зарядкой (40 слотов)', unitPrice: 3610 },
+        50: { sku: 'CH-50', name: 'Кейс с зарядкой (45 слотов)', unitPrice: 3610 },
+        60: { sku: 'CH-60', name: 'Кейс транспортировочный (60 слотов)', unitPrice: 3610 },
+        70: { sku: 'CH-70', name: 'Сумка для комплектов', unitPrice: 3610 }
       }
     }
   },
