@@ -58,7 +58,7 @@ export const calculatorConfig: CalculatorConfig = {
 
     // === ИЗМЕНЕНО: только два варианта по смыслу, третий ключ оставлен для совместимости типов ===
     headphones: {
-      in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
+      in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 20 },
       on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 480 },
     },
 
@@ -82,7 +82,7 @@ export const calculatorConfig: CalculatorConfig = {
 
       // === ИЗМЕНЕНО ===
       headphones: {
-        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
+        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 20 },
         on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 480 },
       },
 
@@ -104,7 +104,7 @@ export const calculatorConfig: CalculatorConfig = {
 
       // === ИЗМЕНЕНО ===
       headphones: {
-        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
+        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 20 },
         on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 480 },
       },
 
@@ -126,7 +126,7 @@ export const calculatorConfig: CalculatorConfig = {
 
       // === ИЗМЕНЕНО ===
       headphones: {
-        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 30 },
+        in_ear: { sku: 'HP-IN', name: 'Одноразовые', unitPrice: 20 },
         on_ear: { sku: 'HP-ON', name: 'Многоразовые', unitPrice: 480 },
       },
 
