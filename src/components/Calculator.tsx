@@ -91,7 +91,6 @@ const Calculator: React.FC = () => {
       setShowOrderModal(true);
     } catch (error) {
       console.error('Ошибка корзины:', error);
-      // Можно показать UI-уведомление вместо alert
     }
   };
 
@@ -327,6 +326,13 @@ const Calculator: React.FC = () => {
                 </button>
               ))}
             </nav>
+
+            {/* Поля активной вкладки */}
+            <div className="mt-4">
+              {tabs[activeTab].component}
+            </div>
+
+            {/* Доставка — ПЕРЕНЕСЕНО ВНИЗ, под все поля вкладки */}
             <div className="mt-4">
               <div className="mb-3">
                 <h3 className="md:text-lg font-semibold mb-1">Доставка</h3>
@@ -345,14 +351,17 @@ const Calculator: React.FC = () => {
                   </div>
                 </div>
               </div>
-              {tabs[activeTab].component}
             </div>
           </div>
+
+          {/* Кнопки */}
           <div className="flex gap-3 flex-wrap">
             <button onClick={clearCart} className="h-10 px-6 rounded-lg border border-gray-300 hover:bg-gray-50 cursor-pointer">
               Сбросить
             </button>
           </div>
+
+          {/* Модалка оформления */}
           <OrderModal
             isOpen={showOrderModal}
             onClose={() => setShowOrderModal(false)}
