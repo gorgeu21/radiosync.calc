@@ -98,8 +98,8 @@ export const calculatorConfig: CalculatorConfig = {
     },
 
     audioguide: {
-      transmitter: { sku: 'TX', name: 'Аудиогид', unitPrice: 11500 },
-      receiver: { sku: 'RX', name: 'Триггер', unitPrice: 5000 },
+      transmitter: { sku: 'TX', name: 'Аудиогид', unitPrice: 5000 },
+      receiver: { sku: 'RX', name: 'Триггер', unitPrice: 11500 },
       microphone: { sku: 'MIC', name: 'Микрофон', unitPrice: 1800 },
 
       // === ИЗМЕНЕНО ===
