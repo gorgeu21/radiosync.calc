@@ -314,7 +314,7 @@ const Calculator: React.FC = () => {
                       ${activeTab !== tab.id ? 'bg-custom-gradient text-white' : 'bg-white text-[#359AD7]'}
                       rounded-full top-2 right-3 z-10`}
                   >
-                    <MdQuestionMark className="text-lg" />
+                    <MdQuestionMark className="text-sm" />
                     <div
                       className="absolute left-full top-1/2 -translate-y-1/2 ml-2 min-w-[180px] max-w-xs
                         bg-custom-gradient text-white text-xs rounded-md px-2 py-1 text-left shadow-lg
